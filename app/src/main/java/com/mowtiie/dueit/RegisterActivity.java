@@ -2,6 +2,7 @@ package com.mowtiie.dueit;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,9 +12,12 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.mowtiie.dueit.databinding.ActivityRegisterBinding;
 
+import java.util.Objects;
+
 public class RegisterActivity extends AppCompatActivity {
 
     ActivityRegisterBinding binding;
+    DueItDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +31,30 @@ public class RegisterActivity extends AppCompatActivity {
             return insets;
         });
 
+        database = new DueItDatabase(this);
+
         binding.btnBack.setOnClickListener(v -> finish());
+        binding.btnRegister.setOnClickListener(v -> {
+            String username = Objects.requireNonNull(binding.usernameInput.getText()).toString().trim();
+            String email = Objects.requireNonNull(binding.emailInput.getText()).toString().trim();
+            String password = Objects.requireNonNull(binding.passwordInput.getText()).toString().trim();
+            String confirmPassword = Objects.requireNonNull(binding.confirmPasswordInput.getText()).toString().trim();
+
+            if (username.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+                Toast.makeText(RegisterActivity.this, "All fields are required!", Toast.LENGTH_SHORT).show();
+            } else {
+                if (!password.equalsIgnoreCase(confirmPassword)) {
+                    Toast.makeText(RegisterActivity.this, "Passwords must match!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (database.register(username, email, password)) {
+                    Toast.makeText(this, "Registration successful!", Toast.LENGTH_SHORT).show();
+                    finish();
+                } else {
+                    Toast.makeText(this, "User already exists!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 }
