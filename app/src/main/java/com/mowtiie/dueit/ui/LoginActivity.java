@@ -42,10 +42,12 @@ public class LoginActivity extends AppCompatActivity {
             if (username.isEmpty() || password.isEmpty()) {
                 Toast.makeText(this, "Both fields are required!", Toast.LENGTH_SHORT).show();
             } else {
-                if (database.login(username, password)) {
+                int studentId = database.login(username, password);
+                if (studentId != -1) {
                     Toast.makeText(this, "Login successful!", Toast.LENGTH_SHORT).show();
                     Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
-                    mainIntent.putExtra("EXTRA_USERNAME", username);
+                    mainIntent.putExtra(MainActivity.EXTRA_STUDENT_ID, studentId);
+                    mainIntent.putExtra(MainActivity.EXTRA_USERNAME, username);
                     startActivity(mainIntent);
                     finish();
                 } else {
