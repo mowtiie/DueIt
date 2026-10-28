@@ -84,6 +84,11 @@ public class ManageCourseActivity extends AppCompatActivity {
             return;
         }
 
+        if (name.length() > 100 || instructor.length() > 100 || schedule.length() > 100) {
+            Toast.makeText(this, "Each field must be 100 characters or less!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         boolean saved = editing
                 ? database.updateCourse(courseId, name, instructor, schedule)
                 : database.addCourse(studentId, name, instructor, schedule);

@@ -38,19 +38,24 @@ public class RegisterActivity extends AppCompatActivity {
         binding.btnRegister.setOnClickListener(v -> {
             String username = Objects.requireNonNull(binding.usernameInput.getText()).toString().trim();
             String email = Objects.requireNonNull(binding.emailInput.getText()).toString().trim();
-            String password = Objects.requireNonNull(binding.passwordInput.getText()).toString().trim();
-            String confirmPassword = Objects.requireNonNull(binding.confirmPasswordInput.getText()).toString().trim();
+            String password = Objects.requireNonNull(binding.passwordInput.getText()).toString();
+            String confirmPassword = Objects.requireNonNull(binding.confirmPasswordInput.getText()).toString();
 
             if (username.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
                 Toast.makeText(RegisterActivity.this, "All fields are required!", Toast.LENGTH_SHORT).show();
             } else {
-                if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                if (!username.matches("[A-Za-z0-9_.]{3,30}")) {
+                    Toast.makeText(RegisterActivity.this, "Username must be 3-30 letters, numbers, dots or underscores!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (email.length() > 100 || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                     Toast.makeText(RegisterActivity.this, "Enter a valid email address!", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                if (password.length() < 6) {
-                    Toast.makeText(RegisterActivity.this, "Password must be at least 6 characters!", Toast.LENGTH_SHORT).show();
+                if (password.length() < 16 || password.length() > 64) {
+                    Toast.makeText(RegisterActivity.this, "Password must be 16-64 characters!", Toast.LENGTH_SHORT).show();
                     return;
                 }
 

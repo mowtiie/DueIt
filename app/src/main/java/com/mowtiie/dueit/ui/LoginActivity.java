@@ -37,7 +37,7 @@ public class LoginActivity extends AppCompatActivity {
         binding.btnRegister.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this, RegisterActivity.class)));
         binding.btnLogin.setOnClickListener(v -> {
             String username = Objects.requireNonNull(binding.usernameInput.getText()).toString().trim();
-            String password = Objects.requireNonNull(binding.passwordInput.getText()).toString().trim();
+            String password = Objects.requireNonNull(binding.passwordInput.getText()).toString();
 
             if (username.isEmpty() || password.isEmpty()) {
                 Toast.makeText(this, "Both fields are required!", Toast.LENGTH_SHORT).show();

@@ -19,7 +19,7 @@ public class DueItDatabase extends SQLiteOpenHelper {
     public static final String STATUS_COMPLETED = "Completed";
 
     public DueItDatabase(@Nullable Context context) {
-        super(context, "dueit.db", null, 2);
+        super(context, "dueit.db", null, 3);
     }
 
     @Override
@@ -32,7 +32,7 @@ public class DueItDatabase extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE IF NOT EXISTS students(" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "username TEXT NOT NULL UNIQUE," +
+                "username TEXT NOT NULL UNIQUE COLLATE NOCASE," +
                 "email TEXT NOT NULL," +
                 "password TEXT NOT NULL)");
 
