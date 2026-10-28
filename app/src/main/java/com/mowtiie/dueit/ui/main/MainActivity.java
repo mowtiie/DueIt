@@ -1,4 +1,4 @@
-package com.mowtiie.dueit.ui;
+package com.mowtiie.dueit.ui.main;
 
 import android.Manifest;
 import android.content.Intent;
@@ -20,9 +20,13 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.mowtiie.dueit.R;
-import com.mowtiie.dueit.data.Course;
-import com.mowtiie.dueit.data.DueItDatabase;
+import com.mowtiie.dueit.data.database.DueItDatabase;
+import com.mowtiie.dueit.data.model.Course;
 import com.mowtiie.dueit.databinding.ActivityMainBinding;
+import com.mowtiie.dueit.ui.adapter.GenericAdapter;
+import com.mowtiie.dueit.ui.assignment.AssignmentListActivity;
+import com.mowtiie.dueit.ui.auth.LoginActivity;
+import com.mowtiie.dueit.ui.course.ManageCourseActivity;
 
 import java.util.ArrayList;
 import java.util.Locale;

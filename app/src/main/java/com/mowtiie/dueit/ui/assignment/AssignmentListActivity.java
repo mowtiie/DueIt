@@ -1,4 +1,4 @@
-package com.mowtiie.dueit.ui;
+package com.mowtiie.dueit.ui.assignment;
 
 import android.content.Intent;
 import android.graphics.Paint;
@@ -15,10 +15,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.chip.Chip;
+
 import com.mowtiie.dueit.R;
-import com.mowtiie.dueit.data.Assignment;
-import com.mowtiie.dueit.data.DueItDatabase;
+import com.mowtiie.dueit.data.database.DueItDatabase;
+import com.mowtiie.dueit.data.model.Assignment;
 import com.mowtiie.dueit.databinding.ActivityAssignmentListBinding;
+import com.mowtiie.dueit.ui.adapter.GenericAdapter;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

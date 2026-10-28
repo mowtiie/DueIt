@@ -1,4 +1,4 @@
-package com.mowtiie.dueit.ui;
+package com.mowtiie.dueit.ui.assignment;
 
 import android.os.Bundle;
 import android.view.View;
@@ -17,9 +17,11 @@ import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.timepicker.MaterialTimePicker;
 import com.google.android.material.timepicker.TimeFormat;
-import com.mowtiie.dueit.data.Assignment;
-import com.mowtiie.dueit.data.DueItDatabase;
+
+import com.mowtiie.dueit.data.database.DueItDatabase;
+import com.mowtiie.dueit.data.model.Assignment;
 import com.mowtiie.dueit.databinding.ActivityManageAssignmentBinding;
+import com.mowtiie.dueit.util.NotificationHelper;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;

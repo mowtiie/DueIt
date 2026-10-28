@@ -1,4 +1,4 @@
-package com.mowtiie.dueit.ui;
+package com.mowtiie.dueit.ui.auth;
 
 import android.os.Bundle;
 import android.util.Patterns;
@@ -10,7 +10,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.mowtiie.dueit.data.DueItDatabase;
+import com.mowtiie.dueit.data.database.DueItDatabase;
 import com.mowtiie.dueit.databinding.ActivityRegisterBinding;
 
 import java.util.Objects;

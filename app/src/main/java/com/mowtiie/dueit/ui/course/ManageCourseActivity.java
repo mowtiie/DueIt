@@ -1,4 +1,4 @@
-package com.mowtiie.dueit.ui;
+package com.mowtiie.dueit.ui.course;
 
 import android.os.Bundle;
 import android.view.View;
@@ -11,8 +11,9 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.mowtiie.dueit.data.Course;
-import com.mowtiie.dueit.data.DueItDatabase;
+
+import com.mowtiie.dueit.data.database.DueItDatabase;
+import com.mowtiie.dueit.data.model.Course;
 import com.mowtiie.dueit.databinding.ActivityManageCourseBinding;
 
 import java.util.Objects;

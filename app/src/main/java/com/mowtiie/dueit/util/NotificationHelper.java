@@ -1,4 +1,4 @@
-package com.mowtiie.dueit.ui;
+package com.mowtiie.dueit.util;
 
 import android.Manifest;
 import android.app.NotificationChannel;

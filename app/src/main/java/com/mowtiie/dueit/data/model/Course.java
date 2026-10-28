@@ -1,4 +1,4 @@
-package com.mowtiie.dueit.data;
+package com.mowtiie.dueit.data.model;
 
 public class Course {
     public int id;

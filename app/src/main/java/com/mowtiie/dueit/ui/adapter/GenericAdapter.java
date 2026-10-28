@@ -1,4 +1,4 @@
-package com.mowtiie.dueit.ui;
+package com.mowtiie.dueit.ui.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;

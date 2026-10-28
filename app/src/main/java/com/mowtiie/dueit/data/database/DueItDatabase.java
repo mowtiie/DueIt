@@ -1,4 +1,4 @@
-package com.mowtiie.dueit.data;
+package com.mowtiie.dueit.data.database;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,6 +7,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
+
+import com.mowtiie.dueit.data.model.Assignment;
+import com.mowtiie.dueit.data.model.Course;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
