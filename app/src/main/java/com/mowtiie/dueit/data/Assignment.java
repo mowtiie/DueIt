@@ -7,6 +7,7 @@ public class Assignment {
     public String dueDate;
     public String description;
     public String priorityLevel;
+    public String status;
 
     public Assignment() {
 

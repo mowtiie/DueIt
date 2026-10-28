@@ -8,6 +8,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DueItDatabase extends SQLiteOpenHelper {
 
     public DueItDatabase(@Nullable Context context) {
@@ -63,6 +66,55 @@ public class DueItDatabase extends SQLiteOpenHelper {
             int count = cursor.getCount();
             cursor.close();
             return count > 0;
+        }
+    }
+
+    public ArrayList<Course> getCoursesForUser(String username) {
+        try (SQLiteDatabase database = getReadableDatabase()) {
+            ArrayList<Course> courses = new ArrayList<>();
+
+            String query = "SELECT c.id, c.user_id, c.course_name, c.instructor, c.schedule " +
+                    "FROM courses c " +
+                    "JOIN students s ON c.user_id = s.id " +
+                    "WHERE s.username = ?";
+
+            Cursor cursor = database.rawQuery(query, new String[]{username});
+            if (cursor.moveToFirst()) {
+                do {
+                    Course course = new Course();
+                    course.id = cursor.getInt(cursor.getColumnIndexOrThrow("id"));
+                    course.studentId = cursor.getInt(cursor.getColumnIndexOrThrow("student_id"));
+                    course.name = cursor.getString(cursor.getColumnIndexOrThrow("name"));
+                    course.instructor = cursor.getString(cursor.getColumnIndexOrThrow("instructor"));
+                    course.schedule = cursor.getString(cursor.getColumnIndexOrThrow("schedule"));
+                    courses.add(course);
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+            return courses;
+        }
+    }
+
+    public ArrayList<Assignment> getAssignmentsFromCourse(int courseId) {
+        try (SQLiteDatabase database = getReadableDatabase()) {
+            ArrayList<Assignment> assignments = new ArrayList<>();
+            Cursor cursor = database.rawQuery("SELECT * FROM assignments WHERE course_id = ?", new String[]{String.valueOf(courseId)});
+
+            if (cursor.moveToFirst()) {
+                do {
+                    Assignment assignment = new Assignment();
+                    assignment.id = cursor.getInt(cursor.getColumnIndexOrThrow("id"));
+                    assignment.courseId = cursor.getInt(cursor.getColumnIndexOrThrow("course_id"));
+                    assignment.title = cursor.getString(cursor.getColumnIndexOrThrow("title"));
+                    assignment.description = cursor.getString(cursor.getColumnIndexOrThrow("description"));
+                    assignment.dueDate = cursor.getString(cursor.getColumnIndexOrThrow("due_date"));
+                    assignment.priorityLevel = cursor.getString(cursor.getColumnIndexOrThrow("priority_level"));
+                    assignment.status = cursor.getString(cursor.getColumnIndexOrThrow("status"));
+                    assignments.add(assignment);
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+            return assignments;
         }
     }
 }
