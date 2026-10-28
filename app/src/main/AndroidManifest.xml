@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DueIt">
         <activity
+            android:name=".ui.ManageCourseActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.RegisterActivity"
             android:exported="false" />
         <activity
