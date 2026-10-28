@@ -1,4 +1,4 @@
-package com.mowtiie.dueit;
+package com.mowtiie.dueit.data;
 
 public class Student {
     public int id;

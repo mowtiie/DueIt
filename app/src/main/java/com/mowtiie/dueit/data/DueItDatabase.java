@@ -1,4 +1,4 @@
-package com.mowtiie.dueit;
+package com.mowtiie.dueit.data;
 
 import android.content.ContentValues;
 import android.content.Context;
