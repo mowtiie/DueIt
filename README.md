@@ -89,7 +89,7 @@ Then open the project in Android Studio and press **Run** on an emulator. The de
 ./gradlew assembleRelease
 ```
 
-To sign the release build, copy `keystore.properties.example` to `keystore.properties` in the project root and fill in your keystore path, alias and passwords. Without that file `assembleRelease` still builds, but the APK is unsigned (`app-release-unsigned.apk`). The signed APK is created at `app/build/outputs/apk/release/`.
+Release builds are minified and shrunk. To sign them, copy `keystore.properties.example` to `keystore.properties` in the project root and fill in your keystore path, alias and passwords. Without that file `assembleRelease` still builds, but the APK is unsigned (`app-release-unsigned.apk`). The signed APK is created at `app/build/outputs/apk/release/`.
 
 Keystore files and `keystore.properties` are git-ignored and must never be committed.
 
