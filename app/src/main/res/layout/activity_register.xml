@@ -54,6 +54,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:hint="Password"
+            app:helperText="Must be 16-64 characters"
             app:endIconMode="password_toggle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">

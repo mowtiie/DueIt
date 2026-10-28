@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         adapter = new GenericAdapter<>(R.layout.item_course, new ArrayList<>(), (itemView, course, position) -> {
             ((android.widget.TextView) itemView.findViewById(R.id.course_name)).setText(course.name);
             ((android.widget.TextView) itemView.findViewById(R.id.course_instructor)).setText("Instructor: " + course.instructor);
-            ((android.widget.TextView) itemView.findViewById(R.id.course_schedule)).setText("Schedule: " + course.schedule);
+            ((android.widget.TextView) itemView.findViewById(R.id.course_schedule)).setText(course.schedule);
 
             int[] progress = database.getCourseProgress(course.id);
             int percent = progress[1] == 0 ? 0 : progress[0] * 100 / progress[1];

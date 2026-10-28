@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/Widget.Material3.CardView.Outlined"
     android:layout_marginHorizontal="16dp"
     android:layout_marginTop="12dp"
@@ -8,56 +9,67 @@
     android:layout_height="wrap_content">
 
     <LinearLayout
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
+        android:orientation="vertical"
         android:padding="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content">
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/course_name"
+            android:textAppearance="?attr/textAppearanceTitleLarge"
+            android:fontFamily="serif"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/course_name"
-                android:textAppearance="?attr/textAppearanceTitleMedium"
-                android:fontFamily="serif"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/course_instructor"
+            android:textAppearance="?attr/textAppearanceBodyMedium"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            android:layout_marginTop="2dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/course_instructor"
-                android:textAppearance="?attr/textAppearanceBodyMedium"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_marginVertical="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/course_schedule"
-                android:textAppearance="?attr/textAppearanceBodySmall"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+        <com.google.android.material.textview.MaterialTextView
+            android:text="SCHEDULE"
+            android:textAppearance="?attr/textAppearanceLabelSmall"
+            android:textColor="?attr/colorPrimary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/course_progress"
-                android:layout_marginTop="8dp"
-                android:textAppearance="?attr/textAppearanceLabelMedium"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/course_schedule"
+            android:textAppearance="?attr/textAppearanceBodyMedium"
+            android:layout_marginTop="2dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
-            <com.google.android.material.progressindicator.LinearProgressIndicator
-                android:id="@+id/course_progress_bar"
-                android:layout_marginTop="4dp"
-                android:max="100"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/course_progress"
+            android:layout_marginTop="16dp"
+            android:textAppearance="?attr/textAppearanceLabelMedium"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/course_progress_bar"
+            android:layout_marginTop="6dp"
+            android:max="100"
+            app:trackThickness="6dp"
+            app:trackCornerRadius="3dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_edit"
             android:text="Edit"
-            style="@style/Widget.Material3.Button.TextButton"
+            app:icon="@drawable/ic_edit"
+            android:layout_marginTop="12dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </LinearLayout>

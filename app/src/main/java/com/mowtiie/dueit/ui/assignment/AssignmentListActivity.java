@@ -108,8 +108,6 @@ public class AssignmentListActivity extends AppCompatActivity {
 
         int[] progress = database.getCourseProgress(courseId);
         int percent = progress[1] == 0 ? 0 : progress[0] * 100 / progress[1];
-        binding.progressText.setText(String.format(Locale.getDefault(),
-                "%d of %d completed (%d%%)", progress[0], progress[1], percent));
         binding.progressBar.setProgress(percent);
     }
 
