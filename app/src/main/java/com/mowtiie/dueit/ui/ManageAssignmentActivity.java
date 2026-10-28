@@ -1,7 +1,5 @@
 package com.mowtiie.dueit.ui;
 
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -13,14 +11,23 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.material.datepicker.CalendarConstraints;
+import com.google.android.material.datepicker.DateValidatorPointForward;
+import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.timepicker.MaterialTimePicker;
+import com.google.android.material.timepicker.TimeFormat;
 import com.mowtiie.dueit.data.Assignment;
 import com.mowtiie.dueit.data.DueItDatabase;
 import com.mowtiie.dueit.databinding.ActivityManageAssignmentBinding;
 
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.TimeZone;
 
 public class ManageAssignmentActivity extends AppCompatActivity {
 
@@ -36,6 +43,7 @@ public class ManageAssignmentActivity extends AppCompatActivity {
     int assignmentId;
     String courseName;
     String status = DueItDatabase.STATUS_PENDING;
+    String originalDueDate = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +81,7 @@ public class ManageAssignmentActivity extends AppCompatActivity {
             }
             status = assignment.status;
             binding.titleInput.setText(assignment.title);
+            originalDueDate = assignment.dueDate;
             binding.dueDateInput.setText(assignment.dueDate);
             binding.priorityInput.setText(assignment.priorityLevel, false);
             binding.descriptionInput.setText(assignment.description);
@@ -90,14 +99,45 @@ public class ManageAssignmentActivity extends AppCompatActivity {
                 .show());
     }
 
+    private static String now() {
+        return new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US).format(new Date());
+    }
+
     private void pickDateTime() {
-        Calendar now = Calendar.getInstance();
-        new DatePickerDialog(this, (view, year, month, day) ->
-                new TimePickerDialog(this, (timeView, hour, minute) ->
-                        binding.dueDateInput.setText(String.format(Locale.US, "%04d-%02d-%02d %02d:%02d",
-                                year, month + 1, day, hour, minute)),
-                        now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), false).show(),
-                now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH)).show();
+        long today = MaterialDatePicker.todayInUtcMilliseconds();
+        CalendarConstraints constraints = new CalendarConstraints.Builder()
+                .setStart(today)
+                .setValidator(DateValidatorPointForward.from(today))
+                .build();
+        MaterialDatePicker<Long> datePicker = MaterialDatePicker.Builder.datePicker()
+                .setTitleText("Select due date")
+                .setCalendarConstraints(constraints)
+                .build();
+
+        datePicker.addOnPositiveButtonClickListener(selection -> {
+            Calendar picked = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+            picked.setTimeInMillis(selection);
+            String date = String.format(Locale.US, "%04d-%02d-%02d",
+                    picked.get(Calendar.YEAR), picked.get(Calendar.MONTH) + 1, picked.get(Calendar.DAY_OF_MONTH));
+
+            Calendar current = Calendar.getInstance();
+            MaterialTimePicker timePicker = new MaterialTimePicker.Builder()
+                    .setTimeFormat(TimeFormat.CLOCK_12H)
+                    .setHour(current.get(Calendar.HOUR_OF_DAY))
+                    .setMinute(current.get(Calendar.MINUTE))
+                    .setTitleText("Select due time")
+                    .build();
+            timePicker.addOnPositiveButtonClickListener(v -> {
+                String dueDate = String.format(Locale.US, "%s %02d:%02d", date, timePicker.getHour(), timePicker.getMinute());
+                if (dueDate.compareTo(now()) < 0) {
+                    Toast.makeText(this, "Due date and time can't be in the past!", Toast.LENGTH_SHORT).show();
+                } else {
+                    binding.dueDateInput.setText(dueDate);
+                }
+            });
+            timePicker.show(getSupportFragmentManager(), "due_time");
+        });
+        datePicker.show(getSupportFragmentManager(), "due_date");
     }
 
     private void save(boolean editing) {
@@ -108,6 +148,22 @@ public class ManageAssignmentActivity extends AppCompatActivity {
 
         if (title.isEmpty() || dueDate.isEmpty() || priority.isEmpty()) {
             Toast.makeText(this, "Title, due date and priority are required!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (title.length() > 100 || description.length() > 500) {
+            Toast.makeText(this, "Title must be 100 characters or less and description 500 or less!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (!Arrays.asList(PRIORITIES).contains(priority)) {
+            Toast.makeText(this, "Choose Low, Medium or High priority!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // An already-overdue assignment can still be edited as long as its due date is untouched.
+        if (!dueDate.equals(originalDueDate) && dueDate.compareTo(now()) < 0) {
+            Toast.makeText(this, "Due date and time can't be in the past!", Toast.LENGTH_SHORT).show();
             return;
         }
 
