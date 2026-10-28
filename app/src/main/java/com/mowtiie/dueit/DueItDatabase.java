@@ -1,6 +1,8 @@
 package com.mowtiie.dueit;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -42,5 +44,25 @@ public class DueItDatabase extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS students;");
         db.execSQL("DROP TABLE IF EXISTS courses;");
         db.execSQL("DROP TABLE IF EXISTS assignments;");
+    }
+
+    public boolean register(String username, String email, String password) {
+        try (SQLiteDatabase database = getWritableDatabase()) {
+            ContentValues values = new ContentValues();
+            values.put("username", username);
+            values.put("email", email);
+            values.put("password", password);
+            long result = database.insert("students", null, values);
+            return result != -1;
+        }
+    }
+
+    public boolean login(String username, String password) {
+        try (SQLiteDatabase database = getReadableDatabase()) {
+            Cursor cursor = database.rawQuery("SELECT * FROM students WHERE username = ? AND password = ?", new String[]{username, password});
+            int count = cursor.getCount();
+            cursor.close();
+            return count > 0;
+        }
     }
 }
