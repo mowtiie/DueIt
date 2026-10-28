@@ -12,6 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DueIt">
         <activity
+            android:name=".ui.AssignmentListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.ManageAssignmentActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.ManageCourseActivity"
             android:exported="false" />
         <activity
