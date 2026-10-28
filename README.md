@@ -63,9 +63,20 @@ cd DueIt
 
 Then open the project in Android Studio and press **Run** on an emulator. The debug APK is created at `app/build/outputs/apk/debug/`.
 
+## Demo accounts
+
+Demo data is seeded when the database is first created, so you can log in and look around without adding anything.
+
+| Username | Password | Data |
+|---|---|---|
+| `demo.student` | `DemoPassword2026` | 3 courses and 7 assignments, some completed |
+| `alex.reyes` | `AlexReyesDemo2026` | 2 courses and 3 assignments |
+| `new.student` | `NewStudentDemo2026` | No courses, to show the empty state |
+
+Assignment due dates are set relative to the day the database is created, so they are never in the past on a fresh install. You can also create your own account on the sign up screen.
+
 ## Notes
 
-- There is no demo data. Create an account on first launch, then add your own courses and assignments.
 - Data is saved in local SQLite and persists across restarts.
 - The database is recreated when its version changes, so upgrading across a schema change clears the saved data.
 - Notifications fire when a High priority assignment is saved. Nothing is scheduled to remind you later.

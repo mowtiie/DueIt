@@ -14,7 +14,10 @@ import com.mowtiie.dueit.data.model.Course;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 
 public class DueItDatabase extends SQLiteOpenHelper {
 
@@ -22,7 +25,7 @@ public class DueItDatabase extends SQLiteOpenHelper {
     public static final String STATUS_COMPLETED = "Completed";
 
     public DueItDatabase(@Nullable Context context) {
-        super(context, "dueit.db", null, 3);
+        super(context, "dueit.db", null, 4);
     }
 
     @Override
@@ -54,6 +57,64 @@ public class DueItDatabase extends SQLiteOpenHelper {
                 "description TEXT NOT NULL DEFAULT ''," +
                 "priority_level TEXT NOT NULL," +
                 "status TEXT NOT NULL DEFAULT 'Pending')");
+
+        seedDemoData(db);
+    }
+
+    // Demo data
+    private void seedDemoData(SQLiteDatabase db) {
+        long demo = seedStudent(db, "demo.student", "demo.student@example.com", "DemoPassword2026");
+        long mobile = seedCourse(db, demo, "Mobile Application Development", "Prof. Maria Santos", "Monday 10am to 12pm\nThursday 1pm to 3pm");
+        seedAssignment(db, mobile, "Android Mini Project Proposal", -3, "11:00", "Submit a 1-page proposal for the class app.", "High", STATUS_COMPLETED);
+        seedAssignment(db, mobile, "Quiz Review: Activity Lifecycle", 2, "09:00", "Review the Activity and Fragment lifecycle callbacks.", "Medium", STATUS_PENDING);
+        seedAssignment(db, mobile, "Wireframe Submission", 7, "15:00", "Upload the Figma link to the class portal.", "Low", STATUS_PENDING);
+        seedAssignment(db, mobile, "Final Demo Presentation", 14, "13:00", "Present the working app to the panel.", "High", STATUS_PENDING);
+        long structures = seedCourse(db, demo, "Data Structures and Algorithms", "Dr. Juan Dela Cruz", "Tuesday 8am to 10am\nFriday 8am to 10am");
+        seedAssignment(db, structures, "Linked List Exercises", -1, "17:00", "Implement insert, delete and reverse for a singly linked list.", "Medium", STATUS_COMPLETED);
+        seedAssignment(db, structures, "Binary Tree Traversals", 4, "08:00", "Write inorder, preorder and postorder traversals.", "High", STATUS_PENDING);
+        long web = seedCourse(db, demo, "Web Systems and Technologies", "Engr. Ana Reyes", "Wednesday 2pm to 5pm\nSaturday 9am to 11am");
+        seedAssignment(db, web, "Portfolio Landing Page", 5, "23:59", "Build a responsive landing page with HTML and CSS.", "Low", STATUS_PENDING);
+
+        long alex = seedStudent(db, "alex.reyes", "alex.reyes@example.com", "AlexReyesDemo2026");
+        long databases = seedCourse(db, alex, "Database Management Systems", "Prof. Liza Navarro", "Tuesday 1pm to 4pm");
+        seedAssignment(db, databases, "ER Diagram Draft", 3, "10:00", "Draw the ER diagram for the library case study.", "Medium", STATUS_PENDING);
+        seedAssignment(db, databases, "SQL Joins Worksheet", 9, "16:00", "Answer the ten join exercises.", "Low", STATUS_PENDING);
+        long networks = seedCourse(db, alex, "Computer Networks", "Engr. Paolo Mendoza", "Thursday 9am to 12pm");
+        seedAssignment(db, networks, "Subnetting Problem Set", 1, "12:00", "Solve the subnetting problems 1 to 15.", "High", STATUS_PENDING);
+
+        // A student with no courses, to show the empty state
+        seedStudent(db, "new.student", "new.student@example.com", "NewStudentDemo2026");
+    }
+
+    private long seedStudent(SQLiteDatabase db, String username, String email, String password) {
+        ContentValues values = new ContentValues();
+        values.put("username", username);
+        values.put("email", email);
+        values.put("password", hashPassword(password));
+        return db.insert("students", null, values);
+    }
+
+    private long seedCourse(SQLiteDatabase db, long studentId, String name, String instructor, String schedule) {
+        ContentValues values = new ContentValues();
+        values.put("student_id", studentId);
+        values.put("name", name);
+        values.put("instructor", instructor);
+        values.put("schedule", schedule);
+        return db.insert("courses", null, values);
+    }
+
+    /** Due dates are relative to today so the demo data never goes stale. */
+    private void seedAssignment(SQLiteDatabase db, long courseId, String title, int daysFromToday, String time, String description, String priority, String status) {
+        Calendar due = Calendar.getInstance();
+        due.add(Calendar.DAY_OF_YEAR, daysFromToday);
+        ContentValues values = new ContentValues();
+        values.put("course_id", courseId);
+        values.put("title", title);
+        values.put("due_date", new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(due.getTime()) + " " + time);
+        values.put("description", description);
+        values.put("priority_level", priority);
+        values.put("status", status);
+        db.insert("assignments", null, values);
     }
 
     @Override
